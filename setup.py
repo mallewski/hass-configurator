@@ -4,7 +4,7 @@ from setuptools import setup
 
 NAME = "hass-configurator"
 PACKAGE_NAME = "hass_configurator"
-VERSION = "0.5.2"
+VERSION = "0.6.0"
 
 setup(name=NAME,
       version=VERSION,
@@ -20,7 +20,7 @@ setup(name=NAME,
       author='Daniel Perna',
       author_email='danielperna84@gmail.com',
       license='MIT',
-      install_requires=['pyotp', 'gitpython'],
+      install_requires=['pyotp', 'gitpython'],  # legacy-cgi required for Python > 3.12
       packages=[PACKAGE_NAME],
       include_package_data=True,
       entry_points={
