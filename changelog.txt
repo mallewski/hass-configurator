@@ -1,3 +1,8 @@
+Version 0.6.0 (2026-04-07)
+- Add dark/light mode (Issue #199) @mallewski
+- Add several triggers and conditions @danielperna84
+- Use Python syntax highlighting for .jinja-files (Issue #249) @danielperna84
+
 Version 0.5.2 (2022-11-08)
 - Bugfix: Fix page load with special characters in states (Issue #217)
 
