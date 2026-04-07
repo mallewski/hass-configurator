@@ -1050,6 +1050,9 @@
                 <li>
                     <div class="chip"> <img src="https://avatars.githubusercontent.com/u/85389871?v=4&s=400" alt="Contact Person"> <a class="black-text" href="https://github.com/wrt54g" target="_blank">Sven Serlier</a> </div>
                 </li>
+                <li>
+                    <div class="chip"> <img src="https://avatars.githubusercontent.com/u/114901470?v=4&s=400" alt="Contact Person"> <a class="black-text" href="https://github.com/mallewski" target="_blank">mallewski</a> </div>
+                </li>
             </ul>
             <p>Libraries used:</p>
             <div class="row">
@@ -1124,14 +1127,21 @@
             <div class="input-field col s12">
                 <select onchange="insert(this.value)">
                     <option value="" disabled selected>Select trigger platform</option>
+                    <option value="calendar">Calendar</option>
+                    <option value="conversation">Sentence</option>
                     <option value="event">Event</option>
+                    <option value="geo_location">Geo location</option>
                     <option value="homeassistant">Home Assistant</option>
                     <option value="mqtt">MQTT</option>
                     <option value="numeric_state">Numeric State</option>
                     <option value="state">State</option>
                     <option value="sun">Sun</option>
+                    <option value="tag">Tag</option>
                     <option value="template">Template</option>
                     <option value="time">Time</option>
+                    <option value="time_pattern">Time pattern</option>
+                    <option value="persistent_notification">Persistent notification</option>
+                    <option value="webhook">Webhook</option>
                     <option value="zone">Zone</option>
                 </select>
                 <label>Trigger platforms</label>
@@ -1156,6 +1166,7 @@
                     <option value="sun">Sun</option>
                     <option value="template">Template</option>
                     <option value="time">Time</option>
+                    <option value="trigger">Trigger</option>
                     <option value="zone">Zone</option>
                 </select>
                 <label>Conditions</label>
@@ -1229,13 +1240,21 @@
             <div class="input-field col s12" style="margin-top: 30px;">
               <select onchange="insert(this.value)">
                 <option value="" disabled selected>Select trigger platform</option>
+                <option value="calendar">Calendar</option>
+                <option value="conversation">Sentence</option>
                 <option value="event">Event</option>
+                <option value="geo_location">Geo location</option>
+                <option value="homeassistant">Home Assistant</option>
                 <option value="mqtt">MQTT</option>
                 <option value="numeric_state">Numeric State</option>
                 <option value="state">State</option>
                 <option value="sun">Sun</option>
+                <option value="tag">Tag</option>
                 <option value="template">Template</option>
                 <option value="time">Time</option>
+                <option value="time_pattern">Time pattern</option>
+                <option value="persistent_notification">Persistent notification</option>
+                <option value="webhook">Webhook</option>
                 <option value="zone">Zone</option>
               </select>
               <label>Trigger Platforms</label>
@@ -1260,6 +1279,7 @@
                 <option value="sun">Sun</option>
                 <option value="template">Template</option>
                 <option value="time">Time</option>
+                <option value="trigger">Trigger</option>
                 <option value="zone">Zone</option>
               </select>
               <label>Conditions</label>
@@ -1867,6 +1887,7 @@
     modemapping['json'] = 'ace/mode/json';
     modemapping['php'] = 'ace/mode/php';
     modemapping['py'] = 'ace/mode/python';
+    modemapping['jinja'] = 'ace/mode/python';
     modemapping['sh'] = 'ace/mode/sh';
     modemapping['sql'] = 'ace/mode/sql';
     modemapping['txt'] = 'ace/mode/text';
