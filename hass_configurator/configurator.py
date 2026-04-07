@@ -110,7 +110,7 @@ SO.setLevel(LOGLEVEL)
 SO.setFormatter(
     logging.Formatter('%(levelname)s:%(asctime)s:%(name)s:%(message)s'))
 LOG.addHandler(SO)
-VERSION = "0.5.2"
+VERSION = "0.6.0"
 BASEDIR = "."
 DEV = False
 LISTENPORT = None
@@ -118,6 +118,35 @@ TOTP = None
 HTTPD = None
 FAIL2BAN_IPS = {}
 REPO = None
+PREFS_FILENAME = ".hass_configurator_prefs.json"
+DEFAULT_PREFS = {"ui_theme": "auto"}
+
+def get_prefs_path():
+    """Return the path for the preferences file (in BASEPATH or BASEDIR)."""
+    base = BASEPATH if BASEPATH else BASEDIR
+    return os.path.join(base, PREFS_FILENAME)
+
+def load_prefs():
+    """Load UI preferences from disk, return defaults on any error."""
+    try:
+        with open(get_prefs_path(), 'r') as fptr:
+            data = json.loads(fptr.read())
+            # Ensure all default keys exist
+            for k, v in DEFAULT_PREFS.items():
+                data.setdefault(k, v)
+            return data
+    except Exception:
+        return dict(DEFAULT_PREFS)
+
+def save_prefs(prefs):
+    """Persist UI preferences to disk."""
+    try:
+        with open(get_prefs_path(), 'w') as fptr:
+            fptr.write(json.dumps(prefs))
+        return True
+    except Exception as err:
+        LOG.warning("Could not save preferences: %s", err)
+        return False
 
 ERROR_HTML = """<!DOCTYPE html>
 <html lang="en">
@@ -633,6 +662,11 @@ class RequestHandler(BaseHTTPRequestHandler):
                 if os.path.isdir(dirpath):
                     self.wfile.write(os.path.abspath(os.path.dirname(dirpath)))
             return
+        elif req.path.endswith('/api/prefs'):
+            self.send_header('Content-type', 'text/json')
+            self.end_headers()
+            self.wfile.write(bytes(json.dumps(load_prefs()), "utf8"))
+            return
         elif req.path.endswith('/api/netstat'):
             content = ""
             self.send_header('Content-type', 'text/json')
@@ -872,7 +906,8 @@ class RequestHandler(BaseHTTPRequestHandler):
                     hass_api_address="%s" % (HASS_API, ),
                     hass_ws_address=ws_api,
                     api_password=HASS_API_PASSWORD if HASS_API_PASSWORD else "",
-                    standalone=standalone)
+                    standalone=standalone,
+                    ui_theme=load_prefs().get('ui_theme', 'auto'))
             except Exception as err:
                 LOG.warning("Error getting html: %s", err)
                 html = ERROR_HTML
@@ -1565,6 +1600,30 @@ class RequestHandler(BaseHTTPRequestHandler):
                         LOG.warning(err)
             else:
                 response['message'] = "Missing IP"
+        elif req.path.endswith('/api/prefs'):
+            try:
+                body = self.rfile.read(length).decode('utf-8')
+                new_prefs = json.loads(body)
+            except Exception as err:
+                LOG.warning(err)
+                new_prefs = {}
+            if 'ui_theme' in new_prefs:
+                theme = new_prefs['ui_theme']
+                if theme in ('light', 'dark', 'auto'):
+                    prefs = load_prefs()
+                    prefs['ui_theme'] = theme
+                    ok = save_prefs(prefs)
+                    self.send_response(200)
+                    self.send_header('Content-type', 'text/json')
+                    self.end_headers()
+                    response['error'] = not ok
+                    response['message'] = "Preferences saved" if ok else "Could not write prefs file"
+                    self.wfile.write(bytes(json.dumps(response), "utf8"))
+                    return
+                else:
+                    response['message'] = "Invalid theme value"
+            else:
+                response['message'] = "Missing ui_theme"
         else:
             response['message'] = "Invalid method"
         self.send_response(200)

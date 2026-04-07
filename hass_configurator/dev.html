@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" data-theme="$ui_theme">
 <head>
     <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1.0" />
@@ -90,6 +90,8 @@
     <ul id="dropdown_menu" class="dropdown-content z-depth-4">
         <li><a onclick="localStorage.setItem('new_tab', true);window.open(window.location.origin+window.location.pathname, '_blank');">New tab</a></li>
         <li class="divider"></li>
+        <li><a onclick="cycleTheme()" id="theme_toggle_item"><i class="material-icons" style="vertical-align:middle;margin-right:8px;font-size:18px;" id="theme_toggle_icon">brightness_auto</i><span id="theme_toggle_label">Theme: Auto</span></a></li>
+        <li class="divider"></li>
         <li><a target="_blank" href="https://home-assistant.io/components/">Components</a></li>
         <li><a target="_blank" href="https://materialdesignicons.com/">Material Icons</a></li>
         <li><a href="#" data-activates="ace_settings" class="ace_settings-collapse">Editor Settings</a></li>
@@ -110,6 +112,8 @@
     </ul>
     <ul id="dropdown_menu_mobile" class="dropdown-content z-depth-4">
         <li><a onclick="localStorage.setItem('new_tab', true);window.open(window.location.origin+window.location.pathname, '_blank');">New tab</a></li>
+        <li class="divider"></li>
+        <li><a onclick="cycleTheme()"><i class="material-icons" style="vertical-align:middle;margin-right:8px;font-size:18px;" id="theme_toggle_icon_mobile">brightness_auto</i><span id="theme_toggle_label_mobile">Theme: Auto</span></a></li>
         <li class="divider"></li>
         <li><a target="_blank" href="https://home-assistant.io/help/">Help</a></li>
         <li><a target="_blank" href="https://home-assistant.io/components/">Components</a></li>
@@ -1046,6 +1050,12 @@
                 <li>
                     <div class="chip"> <img src="https://avatars.githubusercontent.com/u/85389871?v=4&s=400" alt="Contact Person"> <a class="black-text" href="https://github.com/wrt54g" target="_blank">Sven Serlier</a> </div>
                 </li>
+                <li>
+                    <div class="chip"> <img src="https://avatars.githubusercontent.com/u/613272?v=4&s=400" alt="Contact Person"> <a class="black-text" href="https://github.com/maweki" target="_blank">Mario Wenzel</a> </div>
+                </li>
+                <li>
+                    <div class="chip"> <img src="https://avatars.githubusercontent.com/u/114901470?v=4&s=400" alt="Contact Person"> <a class="black-text" href="https://github.com/mallewski" target="_blank">mallewski</a> </div>
+                </li>
             </ul>
             <p>Libraries used:</p>
             <div class="row">
@@ -1120,14 +1130,21 @@
             <div class="input-field col s12">
                 <select onchange="insert(this.value)">
                     <option value="" disabled selected>Select trigger platform</option>
+                    <option value="calendar">Calendar</option>
+                    <option value="conversation">Sentence</option>
                     <option value="event">Event</option>
+                    <option value="geo_location">Geo location</option>
                     <option value="homeassistant">Home Assistant</option>
                     <option value="mqtt">MQTT</option>
                     <option value="numeric_state">Numeric State</option>
                     <option value="state">State</option>
                     <option value="sun">Sun</option>
+                    <option value="tag">Tag</option>
                     <option value="template">Template</option>
                     <option value="time">Time</option>
+                    <option value="time_pattern">Time pattern</option>
+                    <option value="persistent_notification">Persistent notification</option>
+                    <option value="webhook">Webhook</option>
                     <option value="zone">Zone</option>
                 </select>
                 <label>Trigger platforms</label>
@@ -1152,6 +1169,7 @@
                     <option value="sun">Sun</option>
                     <option value="template">Template</option>
                     <option value="time">Time</option>
+                    <option value="trigger">Trigger</option>
                     <option value="zone">Zone</option>
                 </select>
                 <label>Conditions</label>
@@ -1225,13 +1243,21 @@
             <div class="input-field col s12" style="margin-top: 30px;">
               <select onchange="insert(this.value)">
                 <option value="" disabled selected>Select trigger platform</option>
+                <option value="calendar">Calendar</option>
+                <option value="conversation">Sentence</option>
                 <option value="event">Event</option>
+                <option value="geo_location">Geo location</option>
+                <option value="homeassistant">Home Assistant</option>
                 <option value="mqtt">MQTT</option>
                 <option value="numeric_state">Numeric State</option>
                 <option value="state">State</option>
                 <option value="sun">Sun</option>
+                <option value="tag">Tag</option>
                 <option value="template">Template</option>
                 <option value="time">Time</option>
+                <option value="time_pattern">Time pattern</option>
+                <option value="persistent_notification">Persistent notification</option>
+                <option value="webhook">Webhook</option>
                 <option value="zone">Zone</option>
               </select>
               <label>Trigger Platforms</label>
@@ -1256,6 +1282,7 @@
                 <option value="sun">Sun</option>
                 <option value="template">Template</option>
                 <option value="time">Time</option>
+                <option value="trigger">Trigger</option>
                 <option value="zone">Zone</option>
               </select>
               <label>Conditions</label>
@@ -1303,15 +1330,15 @@
               </div>
               <p class="col s12">
                   <input type="checkbox" class="blue_check" onclick="editor.setOption('highlightActiveLine', !editor.getOptions().highlightActiveLine)" id="highlightActiveLine" />
-                  <Label for="highlightActiveLine">Hightlight Active Line</label>
+                  <Label for="highlightActiveLine">Highlight Active Line</label>
               </p>
               <p class="col s12">
                   <input type="checkbox" class="blue_check" onclick="editor.setOption('highlightGutterLine', !editor.getOptions().highlightGutterLine)" id="highlightGutterLine" />
-                  <Label for="highlightGutterLine">Hightlight Gutter Line</label>
+                  <Label for="highlightGutterLine">Highlight Gutter Line</label>
               </p>
               <p class="col s12">
                   <input type="checkbox" class="blue_check" onclick="editor.setOption('highlightSelectedWord', !editor.getOptions().highlightSelectedWord)" id="highlightSelectedWord" />
-                  <Label for="highlightSelectedWord">Hightlight Selected Word</label>
+                  <Label for="highlightSelectedWord">Highlight Selected Word</label>
               </p>
               <p class="col s12">
                   <input type="checkbox" class="blue_check" onclick="editor.setOption('hScrollBarAlwaysVisible', !editor.getOptions().hScrollBarAlwaysVisible)" id="hScrollBarAlwaysVisible" />
@@ -1810,7 +1837,7 @@
             data: entities_search,
             limit: 40,
             onAutocomplete: function(val) {
-                insert(val.split("(")[1].split(")")[0]);
+                insert(val.split("(").pop().split(")")[0]);
             },
             minLength: 1,
         });
@@ -1818,7 +1845,7 @@
             data: entities_search,
             limit: 40,
             onAutocomplete: function(val) {
-                insert(val.split("(")[1].split(")")[0]);
+                insert(val.split("(").pop().split(")")[0]);
             },
             minLength: 1,
         });
@@ -1863,6 +1890,7 @@
     modemapping['json'] = 'ace/mode/json';
     modemapping['php'] = 'ace/mode/php';
     modemapping['py'] = 'ace/mode/python';
+    modemapping['jinja'] = 'ace/mode/python';
     modemapping['sh'] = 'ace/mode/sh';
     modemapping['sql'] = 'ace/mode/sql';
     modemapping['txt'] = 'ace/mode/text';
@@ -2938,6 +2966,115 @@
     }
 
     apply_settings();
+
+
+    /* ============================================================
+       Theme management – persisted server-side via /api/prefs
+       Modes: "auto" | "light" | "dark"
+       ============================================================ */
+
+    var THEME_MODES = ['auto', 'light', 'dark'];
+    var THEME_LABELS = {
+        'auto':  'Theme: Auto',
+        'light': 'Theme: Light',
+        'dark':  'Theme: Dark'
+    };
+    var THEME_ICONS = {
+        'auto':  'brightness_auto',
+        'light': 'brightness_high',
+        'dark':  'brightness_2'
+    };
+    // Best matching Ace themes for each UI mode
+    var ACE_THEMES = {
+        'light': 'ace/theme/chrome',
+        'dark':  'ace/theme/monokai'
+    };
+
+    function _isSystemDark() {
+        return window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches;
+    }
+
+    function _resolvedMode(mode) {
+        // Resolve "auto" to the actual rendered mode
+        if (mode === 'auto') return _isSystemDark() ? 'dark' : 'light';
+        return mode;
+    }
+
+    function applyTheme(mode, saveToServer) {
+        // Set data-theme on <html>: "dark", "light", or remove for auto CSS
+        var html = document.documentElement;
+        if (mode === 'auto') {
+            html.removeAttribute('data-theme');
+        } else {
+            html.setAttribute('data-theme', mode);
+        }
+
+        // Sync Ace editor theme to resolved mode
+        try {
+            var resolved = _resolvedMode(mode);
+            editor.setTheme(ACE_THEMES[resolved]);
+            // Update the theme <select> in Editor Settings if it exists
+            var themeSelect = document.getElementById('theme');
+            if (themeSelect) {
+                themeSelect.value = ACE_THEMES[resolved];
+            }
+        } catch(e) {}
+
+        // Update toggle labels and icons (desktop + mobile)
+        var label  = THEME_LABELS[mode]  || 'Theme';
+        var icon   = THEME_ICONS[mode]   || 'brightness_auto';
+        ['theme_toggle_label', 'theme_toggle_label_mobile'].forEach(function(id) {
+            var el = document.getElementById(id);
+            if (el) el.textContent = label;
+        });
+        ['theme_toggle_icon', 'theme_toggle_icon_mobile'].forEach(function(id) {
+            var el = document.getElementById(id);
+            if (el) el.textContent = icon;
+        });
+
+        // Persist to server so all devices get the same setting
+        if (saveToServer) {
+            $.ajax({
+                url: 'api/prefs',
+                type: 'POST',
+                contentType: 'application/json',
+                data: JSON.stringify({ui_theme: mode}),
+                success: function(resp) {
+                    if (resp.error) {
+                        Materialize.toast('Could not save theme preference: ' + resp.message, 3000);
+                    }
+                },
+                error: function() {
+                    Materialize.toast('Could not save theme preference', 3000);
+                }
+            });
+        }
+    }
+
+    function cycleTheme() {
+        var current = document.documentElement.getAttribute('data-theme') || 'auto';
+        // Normalise: if attribute missing it is "auto"
+        if (!THEME_MODES.includes(current)) current = 'auto';
+        var next = THEME_MODES[(THEME_MODES.indexOf(current) + 1) % THEME_MODES.length];
+        applyTheme(next, true);
+    }
+
+    // Apply the server-supplied theme immediately (already set as data-theme on
+    // <html> at server render time, so no flash). Just sync Ace + labels.
+    (function() {
+        var initialMode = document.documentElement.getAttribute('data-theme') || 'auto';
+        applyTheme(initialMode, false);
+
+        // Also react when the OS switches dark/light while the tab is open
+        if (window.matchMedia) {
+            window.matchMedia('(prefers-color-scheme: dark)').addEventListener('change', function() {
+                var current = document.documentElement.getAttribute('data-theme') || 'auto';
+                if (current === 'auto' || !current) {
+                    applyTheme('auto', false);
+                }
+            });
+        }
+    })();
 
     function save_ace_settings() {
         localStorage.pochass = JSON.stringify(editor.getOptions())
